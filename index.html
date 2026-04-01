@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الشيخ العلامة الهادي أبوصبيع الخويلدي</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Amiri:ital,wght@1,400&display=swap" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+<style>
+/* المتغيرات الأساسية للألوان */
+:root {
+    --bg-color: #0f0f0f;
+    --card-bg: #1a1a1a;
+    --text-color: #e0e0e0;
+    --accent-color: #ffc107; /* ذهبي افتراضي */
+    --nav-bg: #111111;
+    --border-color: rgba(255,193,7,0.1);
+    --font-scale: 16px;
+}
+
+body {
+    margin: 0;
+    font-family: 'Cairo', sans-serif;
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-size: var(--font-scale);
+    transition: all 0.3s ease;
+}
+
+/* هيدر */
+header {
+    text-align: center;
+    padding: 25px 20px;
+    background: #000;
+    border-bottom: 3px solid var(--accent-color);
+    position: relative;
+}
+
+header h1 {
+    margin: 0;
+    color: var(--accent-color);
+    font-size: 1.5rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+header p {
+    margin: 5px 0 0;
+    color: var(--text-color);
+    opacity: 0.7;
+    font-size: 0.9rem;
+}
+
+/* الأقسام */
+.section {
+    display: none;
+    padding: 20px 20px 80px;
+}
+
+.active {
+    display: block;
+}
+
+/* كرت */
+.card {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    border: 1px solid var(--border-color);
+}
+
+.card h2 {
+    color: var(--accent-color);
+    margin: 0 0 15px 0;
+    font-size: 1.3rem;
+    border-bottom: 2px solid rgba(255,255,255,0.05);
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card h2 span {
+    font-size: 1.5rem;
+}
+
+.card p {
+    line-height: 1.8;
+    margin-bottom: 10px;
+}
+
+/* نص الشهادة بنمط خاص */
+.certificate-text {
+    font-family: 'Amiri', serif;
+    font-size: 1.2rem;
+    line-height: 2;
+    background: rgba(0,0,0,0.2);
+    padding: 20px;
+    border-radius: 10px;
+    border-right: 4px solid var(--accent-color);
+}
+
+/* الصور */
+img.certificate {
+    width: 100%;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s transform;
+    border: 2px solid rgba(255,255,255,0.05);
+}
+
+img.certificate:hover {
+    transform: scale(1.02);
+    border-color: var(--accent-color);
+}
+
+/* viewer */
+.viewer {
+    position: fixed;
+    top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.95);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index: 2000;
+}
+
+.viewer img {
+    max-width: 95%; max-height: 95%;
+    border: 3px solid var(--accent-color);
+    border-radius: 10px;
+}
+
+/* الصوت والأزرار الإضافية */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.audio-btn {
+    background: var(--accent-color);
+    color: #000;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.audio-btn.playing {
+    background: #e0e0e0;
+}
+
+.random-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+    border: 1px solid var(--accent-color);
+}
+
+/* شريط التحكم السفلي المطور */
+nav {
+    position: fixed;
+    bottom: 0; width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    background: var(--nav-bg);
+    padding: 8px 0;
+    border-top: 2px solid var(--accent-color);
+    z-index: 1000;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+}
+
+nav::-webkit-scrollbar {
+    display: none;
+}
+nav {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+nav button {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    opacity: 0.6;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Cairo', sans-serif;
+    padding: 5px 15px;
+    flex: 0 0 auto;
+}
+
+nav button.active-nav {
+    color: var(--accent-color);
+    opacity: 1;
+}
+
+nav button span {
+    font-size: 1.4rem;
+}
+
+/* واجهة الإعدادات */
+.settings-control {
+    margin-bottom: 20px;
+}
+
+.settings-control label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.theme-options {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.theme-btn {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.theme-btn.active {
+    border-color: #fff;
+}
+
+.font-slider {
+    width: 100%;
+    margin-top: 10px;
+    accent-color: var(--accent-color);
+}
+
+/* نمط مميز لكرت الأعمال والقصص */
+.work-item {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-right: 3px solid var(--accent-color);
+}
+
+.work-item h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+    color: var(--accent-color);
+}
+
+.work-item p {
+    margin: 0;
+    font-size: 0.95rem;
+    opacity: 0.8;
+}
+
+/* حاوية مشغل الفيديو */
+.responsive-video {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 2px solid var(--border-color);
+}
+
+.responsive-video iframe {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    border: 0;
+}
+
+.spacer { height: 80px; }
+
+/* رسالة التلميح (Swipe Hint) */
+.swipe-hint {
+    position: fixed;
+    bottom: 75px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 1001;
+    border: 1px solid var(--accent-color);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    animation: bounce 2s infinite;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translate(-50%, 0); }
+    50% { transform: translate(-50%, -5px); }
+}
+
+/* رسالة التنبيه المنبثقة (Toast) */
+.toast-msg {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--accent-color);
+    color: #000;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: bold;
+    z-index: 3000;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-align: center;
+    max-width: 90%;
+    line-height: 1.5;
+}
+
+/* رسالة التنبيه المنبثقة (Toast) المحسنة */
+.toast-msg {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-150%); /* تبدأ خارج الشاشة من فوق */
+    background: var(--accent-color);
+    color: #000;
+    padding: 12px 25px;
+    border-radius: 12px;
+    font-weight: bold;
+    z-index: 9999; /* للتأكد أنها فوق كل شيء */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.5s;
+    text-align: center;
+    max-width: 85%;
+    line-height: 1.5;
+    opacity: 0;
+    pointer-events: none; /* عشان ما تعطل اللمس لما تختفي */
+}
+
+.toast-msg.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+    transform: translateX(-50%) translateY(0);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="toast-container" class="toast-msg">رسالة</div>
+
+<div id="swipe-hint" class="swipe-hint" onclick="dismissHint()">
+    <span class="material-icons-round" style="font-size: 1.2rem;">swipe</span>
+    يمكنك تمرير الأقسام يميناً ويساراً
+    <span class="material-icons-round" style="font-size: 1.2rem; margin-right: 5px;">close</span>
+</div>
+
+<header>
+    <h1>الشيخ العلامة الهادي أبوصبيع</h1>
+    <p>أثر أجدادنا.. علم وقضاء وإفتاء</p>
+</header>
+
+<div id="bio" class="section active">
+    <div class="card">
+        <h2><span class="material-icons-round">menu_book</span>سيرته العطرة</h2>
+        <p>
+            الشيخ الهادي بن أحمد أبوصبيع الخويلدي رحمه الله، كان من كبار علماء زلطن، ومعلمًا للقرآن والعلوم الشرعية.
+        </p>
+        <p>
+            أصيب بالعمى منذ صغره، لكن ذلك لم يثنه عن طلب العلم، فختم القرآن حفظاً وتلاوة.
+        </p>
+        <p>
+            لم يقتصر علمه على مدينته زلطن، بل كان قاضيًا ومفتيًا لكل المنطقة الغربية بالكامل.
+        </p>
+
+        <div class="action-buttons">
+            <button id="audio-btn" class="audio-btn" onclick="toggleAudio()">
+                <span class="material-icons-round" id="audio-icon">graphic_eq</span>
+                <span id="audio-text">استمع للسيرة</span>
+            </button>
+            <button class="audio-btn random-btn" onclick="showRandom()">
+                <span class="material-icons-round">lightbulb</span>
+                فائدة عشوائية
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="story" class="section">
+    <div class="card">
+        <h2><span class="material-icons-round">history_edu</span>قصة الشهادة التاريخية</h2>
+        <p>
+            أول شهادة علمية للتدريس في العلوم الشرعية تمنح لشيخ من زلطن من حوالي 80 سنة، أي سنة 1939م.
+        </p>
+        <p>
+            نالها الشيخ الهادي أبوصبيع رحمه الله، بعد أن لازم قراءة العلم الشريف بمركز طرابلس الغرب لمدة تقرب من عشر سنوات.
+        </p>
+        <p>
+            وقد ثبتت له أهليته في العلوم الشرعية مع حسن السيرة والسلوك والفطانة والعفة في الديانة.
+        </p>
+    </div>
+</div>
+
+<div id="fatwas" class="section">
+    <div class="card">
+        <h2><span class="material-icons-round">record_voice_over</span>مواقفه ونصرته للعقيدة</h2>
+        
+        <div class="work-item" style="border-right-color: #e74c3c;">
+            <h3>🛡️ قصة إنكاره الذبح لغير الله</h3>
+            <p style="line-height: 1.8; text-align: justify;">
+                كان الشيخ الهادي -رحمه الله- يبصر بقلبه ما قد يخفى على ذوي الأبصار، فكان غيوراً على دين الله وعلى نقاء عقيدة التوحيد. 
+                <br><br>
+                وفي زمن انتشرت فيه بعض العادات الجاهلية نتيجة الجهل، رأى بعض الناس يقدمون القرابين ويذبحون لغير الله عند الأضرحة والمزارات طلباً للبركة والشفاعة من دون الله.
+                <br><br>
+                قام الشيخ كالجبل الأشم، وصدع بكلمة الحق في دروسه وخطبه، محذراً الناس من خطورة هذا الفعل الذي يخدش أصل التوحيد، ومذكراً إياهم دائماً بقول الله تعالى: <b style="color:var(--accent-color);">{قُلْ إِنَّ صَلَاتِي وَنُسُكِي وَمَحْيَايَ وَمَمَاتِي لِلَّهِ رَبِّ الْعَالَمِينَ}</b>.
+                <br><br>
+                لكن العوام في بداية الأمر أبت واستكبرت، وتمسكت بما ألفوا عليه آباءهم من عادات بالية، ورفضوا الاستماع لنصحه بل واجهوه بالصدود. ورغم هذا الجفاء، لم ييأس الشيخ ولم يتراجع، بل قابل جفاءهم بالصبر وطول النفس والموعظة الحسنة، وظل يغرس نور السنة والتوحيد في القلوب، حتى بدأت تلك الظلمات تتلاشى بفضل الله ثم بفضل ثباته، تاركاً للأجيال درساً عظيماً في نصرة العقيدة الصحيحة.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div id="prayers" class="section">
+    <div class="card">
+        <h2><span class="material-icons-round">volunteer_activism</span>أدعية مأثورة للشيخ</h2>
+        <p style="opacity: 0.8; margin-bottom: 15px;">ادعُ للشيخ الهادي أبوصبيع عند دخولك، لعلها تكون ساعة استجابة:</p>
+
+        <div class="work-item">
+            <p style="font-size: 1.1rem; text-align: center; font-family: 'Amiri', serif;">"اللَّهُمَّ اغْفِرْ لَهُ وَارْحَمْهُ، وَعَافِهِ وَاعْفُ عَنْهُ، وَأَكْرَمْ نُزُلَهُ، وَوَسِّعْ مُدْخَلَهُ، وَاغْسِلْهُ بِالْمَاءِ وَالثَّلْجِ وَالْبَرَدِ، وَنَقِّهِ مِنَ الْخَطَايَا كَمَا نَقَّيْتَ الثَّوْبَ الأَبْيَضَ مِنَ الدَّنَسِ."</p>
+        </div>
+
+        <div class="work-item">
+            <p style="font-size: 1.1rem; text-align: center; font-family: 'Amiri', serif;">"اللَّهُمَّ اجعل قبره روضة من رياض الجنة، ولا تجعله حفرة من حفر النار، وافسح له في قبره ونوّر له فيه."</p>
+        </div>
+
+        <div class="work-item">
+            <p style="font-size: 1.1rem; text-align: center; font-family: 'Amiri', serif;">"اللَّهُمَّ إن كان محسناً فزد في إحسانه، وإن كان مسيئاً فتجاوز عن سيئاته، واجعل علمه وتعليمه صدقة جارية تنير له قبره إلى يوم يبعثون."</p>
+        </div>
+    </div>
+</div>
+
+<div id="works" class="section">
+    <div class="card">
+        <h2><span class="material-icons-round">library_books</span>أعماله وآثاره العلمية</h2>
+        <p style="margin-bottom: 15px; opacity: 0.7;">
+            ليكتب الله له أجرها وصدقتها الجارية ما انتفع بها مسلم:
+        </p>
+
+        <div class="work-item">
+            <h3>📖 تحفيظ القرآن الكريم وتدريسه</h3>
+            <p>قام الشيخ بتربية أجيال على حفظ كتاب الله وتلاوته في مساجد زلطن رغم كف بصره.</p>
+        </div>
+
+        <div class="work-item">
+            <h3>⚖️ مجالس القضاء والإفتاء الشرعي</h3>
+            <p>تولى القضاء والفصل في النزاعات وإصدار الفتاوى الشرعية لكامل المنطقة الغربية بليبيا.</p>
+        </div>
+
+        <div class="work-item">
+            <h3>🕌 الحلقات العلمية والدروس الدينية</h3>
+            <p>تأسيس مجالس تعليم متون الفقه المالكي وأصول الدين للطلبة والراغبين في تعلم العلوم الشرعية.</p>
+        </div>
+        
+        <p style="text-align: center; font-style: italic; font-size: 0.9rem; margin-top: 15px; color: var(--accent-color);">
+            "رحمه الله وجعل ما قدّمه في ميزان حسناته"
+        </p>
+    </div>
+</div>
+
+<div id="quran" class="section">
+    <div class="card">
+        <h2><span class="material-icons-round">play_circle_filled</span>القرآن الكريم كاملاً</h2>
+        <div class="responsive-video">
+            <iframe src="https://www.youtube.com/embed/videoseries?list=PLusDqli-BOarEgTRDzwXMgrh5JNqq8Kr8" title="قائمة تشغيل القرآن الكريم" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+<div id="gallery" class="section">
+    <div class="card">
+        <h2><span class="material-icons-round">image</span>صورة الشهادة التاريخية</h2>
+        <img src="image_0.png" class="certificate" alt="صورة ضوئية للشهادة التاريخية للشيخ الهادي أبوصبيع" onerror="this.src='https://via.placeholder.com/400x300?text=الصورة+غير+متوفرة'" onclick="openImg(this)">
+    </div>
+
+    <div class="card">
+        <h2><span class="material-icons-round">auto_stories</span>نص الشهادة</h2>
+        <p class="certificate-text">
+            الشيخ الهادي بن احمد ابي صبيع الخويلدي .
+            <br>
+            الذي لازم قراءة العلم الشريف بمركز طرابلس الغرب لمدة تقرب من عشر سنوات قد ثبتت له اهليته في العلوم الشرعية مع حسن السيرة والسلوك والفطانة والعفة في الديانة .
+            <br>
+            بحيث صار أهلاً لتعليم العلوم الشرعية وإلقاء الدروس وترشيد الطلبة .
+            <br>
+            ولأجل ذلك أعطيت له هذه الشهادة فيما ذكر .
+            <br>
+            تحريراً في الخامس عشر من صفر . 1358 الموافق 5 أبريل 1939م .
+            <br>
+            قاضي قضاة طرابلس الغرب .
+        </p>
+    </div>
+</div>
+
+<div id="settings" class="section">
+    <div class="card">
+        <h2><span class="material-icons-round">settings</span>إعدادات التطبيق</h2>
+        
+        <div class="settings-control">
+            <label>مظهر التطبيق (الألوان)</label>
+            <div class="theme-options">
+                <button class="theme-btn active" style="background:#1a1a1a; color:#ffc107;" onclick="setTheme('gold', this)">الذهبي</button>
+                <button class="theme-btn" style="background:#0b1d12; color:#2ecc71;" onclick="setTheme('green', this)">الإسلامي</button>
+                <button class="theme-btn" style="background:#f5f5f5; color:#333;" onclick="setTheme('light', this)">الفاتح</button>
+            </div>
+        </div>
+
+        <hr style="border:0; border-top: 1px solid rgba(255,255,255,0.05); margin: 20px 0;">
+
+        <div class="settings-control">
+            <label id="font-label">حجم الخط (16px)</label>
+            <input type="range" min="14" max="24" value="16" class="font-slider" oninput="changeFontSize(this.value)">
+        </div>
+
+        <hr style="border:0; border-top: 1px solid rgba(255,255,255,0.05); margin: 20px 0;">
+
+        <div class="settings-control">
+            <label>مشاركة التطبيق</label>
+            <button class="audio-btn" style="width: 100%; justify-content: center; background: transparent; border: 1px solid var(--accent-color); color: var(--text-color);" onclick="copyLink()">
+                <span class="material-icons-round" style="color: var(--accent-color);">share</span>
+                انسخ رابط التطبيق وشاركه للأجر
+            </button>
+        </div>
+    </div>
+
+    <div class="card" style="text-align: center; background: rgba(255, 193, 7, 0.05);">
+        <span class="material-icons-round" style="font-size: 2.5rem; color: var(--accent-color);">code</span>
+        <h3 style="margin: 10px 0 5px 0; color: var(--accent-color);">تطوير وبرمجة</h3>
+        <p style="font-weight: bold; font-size: 1.1rem; margin-bottom: 5px;">معاذ أبوصبيع</p>
+        <p style="font-size: 0.85rem; opacity: 0.7;">تم برمجة هذا العمل كصدقة جارية لروح الشيخ رحمه الله ونفعاً للمسلمين.</p>
+    </div>
+</div>
+
+<div class="viewer" id="viewer" onclick="closeImg()">
+    <img id="fullImg" src="" alt="عرض كامل للصورة">
+</div>
+
+<div class="spacer"></div>
+
+<nav id="nav-bar">
+    <button id="nav-bio" onclick="showSection('bio')" class="active-nav">
+        <span class="material-icons-round">person</span>سيرته
+    </button>
+    <button id="nav-story" onclick="showSection('story')">
+        <span class="material-icons-round">history</span>قصته
+    </button>
+    <button id="nav-fatwas" onclick="showSection('fatwas')">
+        <span class="material-icons-round">campaign</span>مواقفه
+    </button>
+    <button id="nav-prayers" onclick="showSection('prayers')">
+        <span class="material-icons-round">front_hand</span>أدعية
+    </button>
+    <button id="nav-works" onclick="showSection('works')">
+        <span class="material-icons-round">auto_stories</span>أعماله
+    </button>
+    <button id="nav-quran" onclick="showSection('quran')">
+        <span class="material-icons-round">playlist_play</span>القرآن
+    </button>
+    <button id="nav-gallery" onclick="showSection('gallery')">
+        <span class="material-icons-round">photo_library</span>المعرض
+    </button>
+    <button id="nav-settings" onclick="showSection('settings')">
+        <span class="material-icons-round">settings</span>الإعدادات
+    </button>
+</nav>
+
+<script>
+/* نظام التلميحات (Swipe Hint) */
+window.onload = function() {
+    if(!localStorage.getItem("swipeHintDismissed")) {
+        document.getElementById("swipe-hint").style.display = "flex";
+    } else {
+        document.getElementById("swipe-hint").style.display = "none";
+    }
+};
+
+function dismissHint() {
+    document.getElementById("swipe-hint").style.display = "none";
+    localStorage.setItem("swipeHintDismissed", "true");
+}
+
+/* التنبيهات المنبثقة (Toast) */
+function showToast(message) {
+    const toast = document.getElementById("toast-container");
+    toast.innerText = message;
+    toast.classList.add("show");
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 4000);
+}
+
+/* نسخ الرابط (Share) */
+function copyLink() {
+    // ينسخ الرابط الحالي للموقع أينما كان مرفوعاً (مثل جيتهاب)
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+        showToast("✅ تم نسخ رابط التطبيق بنجاح! شاركه مع من تحب.");
+    }).catch(err => {
+        showToast("حدث خطأ أثناء النسخ!");
+    });
+}
+
+/* الميزة العشوائية (حكم وأدعية) */
+const randomData = [
+    "دعاء: اللهم اجعل قبر الشيخ الهادي روضة من رياض الجنة.",
+    "فائدة: ختم الشيخ القرآن حفظاً وتلاوة رغم فقدانه لبصره في صغره.",
+    "دعاء: اللهم ارزقه الفردوس الأعلى بلا حساب ولا سابقة عذاب.",
+    "معلومة: كان للشيخ الهادي دور كبير في محاربة البدع ونشر العقيدة الصحيحة.",
+    "حكمة: من ترك أثراً طيباً وعلماً ينتفع به، لم يمت ذكره بين الناس.",
+    "دعاء: اللهم اجعل هذا التطبيق صدقة جارية ونوراً في
